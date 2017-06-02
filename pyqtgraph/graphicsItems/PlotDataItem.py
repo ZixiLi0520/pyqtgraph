@@ -647,6 +647,8 @@ class PlotDataItem(GraphicsObject):
         ## Perform fourier transform. If x values are not sampled uniformly,
         ## then use np.interp to resample before taking fft.
         dx = np.diff(x)
+        if not dx.size:
+            return np.zeros(1), np.zeros(1)
         uniform = not np.any(np.abs(dx-dx[0]) > (abs(dx[0]) / 1000.))
         if not uniform:
             x2 = np.linspace(x[0], x[-1], len(x))
