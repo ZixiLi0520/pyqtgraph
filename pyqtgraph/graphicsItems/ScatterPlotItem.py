@@ -142,7 +142,7 @@ class SymbolAtlas(object):
                 images.append(img)  ## we only need this to prevent the images being garbage collected immediately
                 arr = fn.imageToArray(img, copy=False, transpose=False)
             else:
-                (y,x,h,w) = sourceRect.getRect()
+                (y,x,h,w) = [int(v) for v in sourceRect.getRect()]
                 arr = self.atlasData[x:x+w, y:y+w]
             rendered[key] = arr
             w = arr.shape[0]
@@ -152,7 +152,7 @@ class SymbolAtlas(object):
         nSymbols = len(rendered)
         if nSymbols > 0:
             avgWidth /= nSymbols
-            width = max(maxWidth, avgWidth * (nSymbols**0.5))
+            width = int(max(maxWidth, avgWidth * (nSymbols**0.5)))
         else:
             avgWidth = 0
             width = 0
@@ -180,7 +180,7 @@ class SymbolAtlas(object):
 
         self.atlasData = np.zeros((width, height, 4), dtype=np.ubyte)
         for key in symbols:
-            y, x, h, w = self.symbolMap[key].getRect()
+            y, x, h, w = [int(v) for v in self.symbolMap[key].getRect()]
             self.atlasData[x:x+w, y:y+h] = rendered[key]
         self.atlas = None
         self.atlasValid = True
